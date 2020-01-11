@@ -1,12 +1,98 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+function Letter(props) {
+    return (
+      <button 
+        className="letter"
+        onClick={() => props.onClick()}
+      >
+        {props.value.toUpperCase()}
+      </button>
+    );
+}
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+      letters: [],
+
+    };
+  }
+
+  handleClick(i) {
+    const letters = this.state.letters.slice();
+    
+    this.setState({
+      letters: letters + i,
+    });
+  }
+
+
+
+  renderLetter(i) {
+    return <Letter 
+    value={i} 
+    onClick={() => this.handleClick(i)}
+    
+    />;
+  }
+
+  render() {
+    const keyboardKeys = [
+      ["q","w","e","r","t","y","u","i","o","p"],
+      ["a","s","d","f","g","h","j","k","l"],
+      ["z","x","c","v","b","n","m"]
+    ];
+
+    const selected = this.state.letters;
+ 
+    return (
+      
+      <div>
+        {selected}
+          <div id="qwerty" className="section">
+              {keyboardKeys.map((rows) =>
+                  <div className="keyrow">
+                      {rows.map((keys) =>
+                          <div className="key">
+                              {this.renderLetter(keys)}
+                          </div>
+                      )}
+                  </div>
+              )}
+          </div>
+      </div>
+    );
+  }
+}
+
+class Game extends React.Component {
+  render() {
+    
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board />
+        </div>
+        <div className="game-info">
+          <div>{/* status */}</div>
+          <ol>{/* TODO */}</ol>
+        </div>
+      </div>
+    );
+  }
+}
+
+// ========================================
+
+ReactDOM.render(
+  <Game />,
+  document.getElementById('root')
+);
+
+
+
