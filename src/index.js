@@ -15,10 +15,11 @@ function Letter(props) {
 
 class Board extends React.Component {
    renderLetter(i) {
+   
     return <Letter 
     value={i}
     onClick={() => this.props.onClick(i)}
-    
+
     />;
   }
 
@@ -46,8 +47,7 @@ class Board extends React.Component {
           wrongSelected.push(letter); 
         }
       }
-    
-   
+       
     return (
       
       <div>
