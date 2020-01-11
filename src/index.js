@@ -29,11 +29,33 @@ class Board extends React.Component {
       ["z","x","c","v","b","n","m"]
     ];
 
+    const selected = this.props.selected;
+    const phrase = "This is the phrase";
+    const splitPhrase = phrase.trim().toLowerCase().replace(/ /g,"").split("");
+
+    // https://gist.github.com/telekosmos/3b62a31a5c43f40849bb from post by VonD made on Jul, 15, 2016
+    const uniquePhrase = [ ...new Set(splitPhrase)];
+
+    const correctSelected = [];
+    const wrongSelected = [];
+
+    for(const letter of selected) {
+        if(uniquePhrase.indexOf(letter) >= 0){
+          correctSelected.push(letter);
+        } else {
+          wrongSelected.push(letter); 
+        }
+      }
+    
    
- 
     return (
       
       <div>
+        <div className="Selected">
+        {correctSelected}
+        <h1>Wrong</h1>
+        {wrongSelected}
+        </div>
           <div id="qwerty" className="section">
               {keyboardKeys.map((rows) =>
                   <div className="keyrow">
@@ -73,7 +95,7 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board 
-          
+          selected = {this.state.letters}
           onClick={(i) => this.handleClick(i)}
           />
         </div>
