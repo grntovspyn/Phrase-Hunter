@@ -14,29 +14,10 @@ function Letter(props) {
 }
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-      letters: [],
-
-    };
-  }
-
-  handleClick(i) {
-    const letters = this.state.letters.slice();
-    
-    this.setState({
-      letters: letters + i,
-    });
-  }
-
-
-
-  renderLetter(i) {
+   renderLetter(i) {
     return <Letter 
-    value={i} 
-    onClick={() => this.handleClick(i)}
+    value={i}
+    onClick={() => this.props.onClick(i)}
     
     />;
   }
@@ -48,12 +29,11 @@ class Board extends React.Component {
       ["z","x","c","v","b","n","m"]
     ];
 
-    const selected = this.state.letters;
+   
  
     return (
       
       <div>
-        {selected}
           <div id="qwerty" className="section">
               {keyboardKeys.map((rows) =>
                   <div className="keyrow">
@@ -71,12 +51,31 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
-  render() {
+  constructor(props){
+    super(props);
+    this.state = {
+
+      letters: [],
+
+    };
+  }
+
+  handleClick(i) {
+    const letters = this.state.letters.slice();
     
+    this.setState({
+      letters: letters + i,
+    });
+  }
+
+  render() {
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board 
+          
+          onClick={(i) => this.handleClick(i)}
+          />
         </div>
         <div className="game-info">
           <div>{/* status */}</div>
