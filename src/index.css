@@ -116,6 +116,7 @@ input[type=submit].correct {
 
 .hide {
   color: transparent;
+  visibility: hidden !important;
 }
 
 .show {
