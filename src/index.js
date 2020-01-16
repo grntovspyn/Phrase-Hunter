@@ -103,29 +103,6 @@ class Phrase extends React.Component {
     );
 
 
-    /******************
-    const selected = this.props.selected;
-    const phrase = this.props.phrase;
-    const splitPhrase = phrase.trim().toLowerCase().replace(/ /g,"").split("");
-
-    // https://gist.github.com/telekosmos/3b62a31a5c43f40849bb from post by VonD made on Jul, 15, 2016
-    const uniquePhrase = [ ...new Set(splitPhrase)];
-
-    const correctSelected = [];
-    const wrongSelected = [];
-
-    for(const letter of selected) {
-        if(uniquePhrase.indexOf(letter) >= 0){
-          correctSelected.push(letter);
-        } else {
-          wrongSelected.push(letter); 
-        }
-      }
-    return;
-
-    }
-
-*/
 
   }
 }
