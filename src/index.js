@@ -2,15 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function IsSpace(props) {
-  
-  if(props.value === " ") {
-    return "hide";
-  } else {
-    return 'letter';
-  }
+// function IsSpace(props) {
 
-}
+
+// }
 
 
 class PhraseLetters extends React.Component {
@@ -87,11 +82,7 @@ class Phrase extends React.Component {
     />;
   }
 
-  checkSpace(i) {
-    return <IsSpace
-    value={i}
-    />;
-  }
+
   
   render() {
 
@@ -102,7 +93,7 @@ class Phrase extends React.Component {
       <div className="section">
       <div id="phrase" className="keyrow">
         {splitPhrase.map((letters) =>
-          <div className={this.checkSpace(letters)}>
+          <div>
           {this.renderPhrase(letters)}  
           </div>
         )}
