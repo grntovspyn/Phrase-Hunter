@@ -17,7 +17,7 @@ function PhraseLetters(props) {
 function Letter(props) {
     return (
       <button 
-        className="letter"
+        className={props.class}
         onClick={() => props.onClick()}
   
       >
@@ -32,6 +32,7 @@ class Board extends React.Component {
    
     return <Letter 
     value={i}
+    class={this.checkSelected(i)}
     onClick={() => this.props.onClick(i)}
 
     />;
@@ -64,9 +65,7 @@ class Board extends React.Component {
           {keyboardKeys.map((rows) =>
               <div className="keyrow">
                   {rows.map((keys) =>
-                      <div className={this.checkSelected(keys)}>
-                          {this.renderLetter(keys)}
-                      </div>
+                    this.renderLetter(keys)
                   )}
               </div>
           )}

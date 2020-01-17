@@ -145,14 +145,14 @@ input[type=submit].correct {
 }
 
 .chosen {
-  background: #3a3f58;
+  background: #007a10;
   border-radius: 5px;
   font-size: var(--font-size-medium);
   color: #FFFFFF;
 }
 
 .wrong {
-  background: #f7a964;
+  background: #b6100a;
   color: #FFFFFF;
 }
 
