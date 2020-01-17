@@ -19,6 +19,7 @@ function Letter(props) {
       <button 
         className="letter"
         onClick={() => props.onClick()}
+  
       >
         {props.value.toUpperCase()}
       </button>
@@ -71,14 +72,12 @@ class Phrase extends React.Component {
     />;
   }
 
-
-
   checkSpace(letters, correctLetters) {
     
-    if(letters === " ") {
-      return "space";
-    } else if (correctLetters.indexOf(letters) >= 0) {
-      return 'show letter';
+    if(correctLetters.indexOf(letters) >= 0) {
+      return "show letter";
+    } else if (letters === " ") {
+      return 'space';
     } else {
       return 'hide letter'
     }
