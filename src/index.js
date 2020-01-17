@@ -2,21 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function IsSpace(props) {
-
- 
-
-}
-
-
 function PhraseLetters(props) {
- 
   return (
     <div
-      className="show"
+      className={props.class}
     >
       {props.value.toUpperCase()}
-  
+
     </div>
   );
 }
@@ -44,7 +36,6 @@ class Board extends React.Component {
     />;
   }
   
-
   render() {
     const keyboardKeys = [
       ["q","w","e","r","t","y","u","i","o","p"],
@@ -52,7 +43,6 @@ class Board extends React.Component {
       ["z","x","c","v","b","n","m"]
     ];
 
-       
     return (
       <div id="qwerty" className="section">
           {keyboardKeys.map((rows) =>
@@ -69,36 +59,43 @@ class Board extends React.Component {
   }
 }
 
+
+
 class Phrase extends React.Component {
   renderPhrase(i) {
    
     return <PhraseLetters
     value={i}
+    class={this.checkLetters()}
     
     />;
   }
 
-  checkSpace(i) {
 
-    if(i === " ") {
-      return "space";
-    } else {
-      return 'show letter';
-    }
+
+  checkSpace(letters, correctLetters) {
     
+    if(letters === " ") {
+      return "space";
+    } else if (correctLetters.indexOf(letters) >= 0) {
+      return 'show letter';
+    } else {
+      return 'hide letter'
+    }
   }
   
   render() {
 
     const phrase = this.props.phrase;
-    const splitPhrase = phrase.split("");
+    const splitPhrase = phrase.toLowerCase().split("");
+    const correctLetters = this.props.correct;
 
     return (
   
       <div id="phrase" className="section">
         <ul>
         {splitPhrase.map((letters) => 
-          <li className={this.checkSpace(letters)}>
+          <li className={this.checkSpace(letters, correctLetters)}>
           {letters.toUpperCase()}  
           </li>
         )}
@@ -106,31 +103,7 @@ class Phrase extends React.Component {
       </div>
 
     );
-
-
-    /******************
-    const selected = this.props.selected;
-    const phrase = this.props.phrase;
-    const splitPhrase = phrase.trim().toLowerCase().replace(/ /g,"").split("");
-
-    // https://gist.github.com/telekosmos/3b62a31a5c43f40849bb from post by VonD made on Jul, 15, 2016
-    const uniquePhrase = [ ...new Set(splitPhrase)];
-
-    const correctSelected = [];
-    const wrongSelected = [];
-
-    for(const letter of selected) {
-        if(uniquePhrase.indexOf(letter) >= 0){
-          correctSelected.push(letter);
-        } else {
-          wrongSelected.push(letter); 
-        }
-      }
-    return;
-
-    }
-
-*/
+  
 
   }
 }
@@ -146,7 +119,7 @@ class Game extends React.Component {
       letters: [],
       correctSelected: [],
       wrongSelected: [],
-      selectedPhrase: ""
+      selectedPhrase: null,
     };
   }
 
@@ -158,9 +131,8 @@ class Game extends React.Component {
     ];
 
 
-    return phrases[Math.floor(Math.random() * phrases.length)]
-    
-
+   // return phrases[Math.floor(Math.random() * phrases.length)]
+    return "Test Phrase";
   }
 
   handleClick(i) {
@@ -171,17 +143,42 @@ class Game extends React.Component {
     });
   }
 
-  render() {
-    const selectedPhrase = this.selectPhrase();
+  checkScore() {
+    const selected = this.state.letters;
+    const phrase = this.selectPhrase();
+    const splitPhrase = phrase.trim().toLowerCase().replace(/ /g,"").split("");
 
+    /**
+     * This line is code is from 
+     * https://gist.github.com/telekosmos/3b62a31a5c43f40849bb 
+     * from post by VonD made on Jul, 15, 2016
+     */
+     
+    const uniquePhrase = [ ...new Set(splitPhrase)];
+
+    const correctSelected = [];
+
+    for(const letter of selected) {
+        if(uniquePhrase.indexOf(letter) >= 0){
+            correctSelected.push(letter);
+        } 
+      }
+    return correctSelected;
+
+    }
+
+  render() {
+   
+    const selectedPhrase = this.selectPhrase();
+    const correct = this.checkScore();
+    
     return (
       <div className="main-container">
-       
         <div className="Phrase">
-        <Phrase 
-        phrase = {selectedPhrase}
-        
-        />
+          <Phrase 
+          phrase = {selectedPhrase}
+          correct = {correct}
+          />
         </div>
      
           <Board 
