@@ -13,6 +13,17 @@ function PhraseLetters(props) {
   );
 }
 
+function Hearts(props) {
+  return (
+    <div
+      className="Hearts"
+    >
+     <img src="liveHeart.png" alt="full heart"></img>
+
+    </div>
+  );
+}
+
 
 function Letter(props) {
     return (
@@ -75,7 +86,6 @@ class Board extends React.Component {
 }
 
 
-
 class Phrase extends React.Component {
   renderPhrase(i) {
    
@@ -121,6 +131,38 @@ class Phrase extends React.Component {
   }
 }
 
+class Lives extends React.Component {
+
+  renderHearts(lives) {
+    return (
+      <Hearts
+        lives={lives}
+
+      />
+    )
+
+  }
+
+  render() {
+    const lives = Array(5).fill(null);
+    const moves = lives.map((step) => {
+      return (
+        <ul>
+          <li className="section">
+            {this.renderHearts(this.props.lives)}
+          </li>
+        </ul>
+      );
+    });
+    
+    return (
+      <div className="game-info">
+      <div>{moves}</div>
+      </div>
+    );
+
+  }
+}
 
 
 class Game extends React.Component {
@@ -132,8 +174,14 @@ class Game extends React.Component {
       correctSelected: [],
       selectedPhrase: null,
       isNewGame: true,
+      winOrLose: null,
+      lives: 5,
     };
+
+    this.initialState = this.state;
   }
+
+ 
 
   selectPhrase() {
     const phrases = [
@@ -141,19 +189,20 @@ class Game extends React.Component {
       "Second Phrase",
       "Finally the third phrase"
     ];
-    return phrases[Math.floor(Math.random() * phrases.length)]
+    return phrases[Math.floor(Math.random() * phrases.length)];
   }
 
   handleClick(i) {
     const letters = this.state.letters.slice();
-    
+  
     this.setState({
       letters: letters + i,
     });
+
+    return this.checkForWin();
   }
 
-  checkScore(selectedPhrase) {
-    const selected = this.state.letters;
+  makePhraseUnique(selectedPhrase) {
     const phrase = selectedPhrase;
     const splitPhrase = phrase.trim().toLowerCase().replace(/ /g,"").split("");
 
@@ -163,43 +212,113 @@ class Game extends React.Component {
      * from post by VonD made on Jul, 15, 2016
      */
     const uniquePhrase = [ ...new Set(splitPhrase)];
+    return uniquePhrase;
+  }
 
+  checkIfCorrect(selectedPhrase) {
+    const selected = this.state.letters;
+    const uniquePhrase = this.makePhraseUnique(selectedPhrase);
     const correctSelected = [];
 
     for(const letter of selected) {
         if(uniquePhrase.indexOf(letter) >= 0){
             correctSelected.push(letter);
-        } 
+        }
     }
     return correctSelected;
+  }
 
+  checkForWin() {
+    const selected = this.state.letters;
+    const currentPhrase = this.state.selectedPhrase;
+    const correct = this.checkIfCorrect(currentPhrase);
+    const uniquePhrase = this.makePhraseUnique(currentPhrase);
+
+    const livesLost = 5 - (selected.length - correct.length);
+
+    this.setState({
+      lives: livesLost,
+    })
+
+    if(uniquePhrase.length === correct.length && this.state.lives > 0) {
+      this.setState({
+        winOrLose: true,
+      });
+    
+
+    } else if(this.state.lives === 0) {
+      this.setState({
+        winOrLose: false,
+      });
+  
+    }
+  }
+
+  gameOver(){
+    
+      if(this.state.winOrLose === true) {
+        return (
+          <div id ="overlay" className="overlayheader">
+            <h2>You Win</h2>
+            <div className="section">
+           <button
+           className="button"
+           onClick={() =>
+            {this.setState(this.initialState)}}
+
+         >Reset Game</button>
+         </div>
+         </div>
+        );
+
+      } else if (this.state.winOrLose === false) {
+        return (
+          <div id ="overlay" className="overlayheader">
+            <h2>You Lose</h2>
+            <div className="section">
+            <button
+           className="button"
+           onClick={() =>
+            {this.setState(this.initialState)}}
+
+          >Reset Game</button>
+         </div>
+          </div>
+        );
+      }
+      return;
   }
 
   render() {
     
     if(!this.state.isNewGame) {
       const selected = this.state.letters;
-      const selectedPhrase = this.state.selectedPhrase;
-      const correct = this.checkScore(selectedPhrase);
-
+      const currentPhrase = this.state.selectedPhrase;
+      const correct = this.checkIfCorrect(currentPhrase);
+      
+      const gameOver = this.gameOver();
+    
       return (
         <div className="main-container">
           <h2 className="banner header">Phrase Hunter</h2>
+          {this.state.lives}
           <div className="Phrase">
             <Phrase 
-            phrase = {selectedPhrase}
-            correct = {correct}
+              phrase = {currentPhrase}
+              correct = {correct}
             />
           </div>
             <Board 
-            selected = {selected}
-            correct = {correct}
-            onClick={(i) => this.handleClick(i)}
+              selected = {selected}
+              correct = {correct}
+              onClick={(i) => this.handleClick(i)}
             />
-          <div className="game-info">
-            <div>{/* status */}</div>
-            <ol>{/* TODO */}</ol>
-          </div>
+            <Lives
+              lives = {this.state.lives}
+              correct = {correct}
+
+            />
+      {gameOver}
         </div>
       );
     } else {

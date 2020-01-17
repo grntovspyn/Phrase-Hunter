@@ -181,6 +181,7 @@ input[type=submit].correct {
   flex-direction: column;
   position: fixed;
   color: #FFFFFF;
+  background-color: tan;
   justify-content: center;
   top: 0;
   bottom: 0;
