@@ -37,6 +37,21 @@ class Board extends React.Component {
     />;
   }
   
+  checkSelected(keys){
+    const selected = this.props.selected;
+    const correct = this.props.correct;
+    if(selected != null) {
+      
+    if(selected.indexOf(keys) >= 0 && correct.indexOf(keys) >= 0) {
+      return "key chosen";
+    } else if (selected.indexOf(keys) >= 0 && correct.indexOf(keys) <= 0) {
+      return "key wrong";
+    } else {
+      return "key";
+    }
+  }
+  }
+
   render() {
     const keyboardKeys = [
       ["q","w","e","r","t","y","u","i","o","p"],
@@ -49,7 +64,7 @@ class Board extends React.Component {
           {keyboardKeys.map((rows) =>
               <div className="keyrow">
                   {rows.map((keys) =>
-                      <div className="key">
+                      <div className={this.checkSelected(keys)}>
                           {this.renderLetter(keys)}
                       </div>
                   )}
@@ -167,7 +182,8 @@ class Game extends React.Component {
     }
 
   render() {
-   
+    
+    const selected = this.state.letters;
     const selectedPhrase = this.selectPhrase();
     const correct = this.checkScore();
     
@@ -181,7 +197,8 @@ class Game extends React.Component {
         </div>
      
           <Board 
-          selected = {this.state.letters}
+          selected = {selected}
+          correct = {correct}
           onClick={(i) => this.handleClick(i)}
           />
   
