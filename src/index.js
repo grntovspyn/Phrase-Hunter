@@ -207,7 +207,7 @@ class Game extends React.Component {
     const splitPhrase = phrase.trim().toLowerCase().replace(/ /g,"").split("");
 
     /**
-     * This line is code is from 
+     * This line of code is from 
      * https://gist.github.com/telekosmos/3b62a31a5c43f40849bb 
      * from post by VonD made on Jul, 15, 2016
      */
