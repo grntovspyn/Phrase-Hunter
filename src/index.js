@@ -26,15 +26,27 @@ function Hearts(props) {
 
 
 function Letter(props) {
+  if(props.class !== "key") {
     return (
       <button 
         className={props.class}
         onClick={() => props.onClick()}
-  
+        disabled
       >
         {props.value.toUpperCase()}
       </button>
     );
+  } else {
+    return (
+      <button 
+        className={props.class}
+        onClick={() => props.onClick()}
+
+      >
+        {props.value.toUpperCase()}
+      </button>
+    );
+  }
 }
 
 
@@ -45,7 +57,7 @@ class Board extends React.Component {
     value={i}
     class={this.checkSelected(i)}
     onClick={() => this.props.onClick(i)}
-
+    
     />;
   }
   
@@ -181,8 +193,6 @@ class Game extends React.Component {
     this.initialState = this.state;
   }
 
- 
-
   selectPhrase() {
     const phrases = [
       "This is phrase one",
@@ -194,12 +204,13 @@ class Game extends React.Component {
 
   handleClick(i) {
     const letters = this.state.letters.slice();
-  
+    this.checkForWin();
     this.setState({
       letters: letters + i,
     });
 
-    return this.checkForWin();
+    
+    return;
   }
 
   makePhraseUnique(selectedPhrase) {
@@ -244,14 +255,15 @@ class Game extends React.Component {
       this.setState({
         winOrLose: true,
       });
-    
+     
 
     } else if(this.state.lives === 0) {
       this.setState({
         winOrLose: false,
       });
-  
+     
     }
+ 
   }
 
   gameOver(){
@@ -302,6 +314,7 @@ class Game extends React.Component {
         <div className="main-container">
           <h2 className="banner header">Phrase Hunter</h2>
           {this.state.lives}
+          {selected}
           <div className="Phrase">
             <Phrase 
               phrase = {currentPhrase}
@@ -318,7 +331,7 @@ class Game extends React.Component {
               correct = {correct}
 
             />
-      {gameOver}
+          {gameOver}
         </div>
       );
     } else {
