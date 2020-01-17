@@ -133,6 +133,7 @@ class Game extends React.Component {
       correctSelected: [],
       wrongSelected: [],
       selectedPhrase: null,
+      isNewGame: true,
     };
   }
 
@@ -144,8 +145,8 @@ class Game extends React.Component {
     ];
 
 
-   // return phrases[Math.floor(Math.random() * phrases.length)]
-    return "Test Phrase";
+    return phrases[Math.floor(Math.random() * phrases.length)]
+    //return "Test Phrase";
   }
 
   handleClick(i) {
@@ -156,9 +157,9 @@ class Game extends React.Component {
     });
   }
 
-  checkScore() {
+  checkScore(selectedPhrase) {
     const selected = this.state.letters;
-    const phrase = this.selectPhrase();
+    const phrase = selectedPhrase;
     const splitPhrase = phrase.trim().toLowerCase().replace(/ /g,"").split("");
 
     /**
@@ -182,10 +183,11 @@ class Game extends React.Component {
 
   render() {
     
-    const selected = this.state.letters;
-    const selectedPhrase = this.selectPhrase();
-    const correct = this.checkScore();
-    
+
+    if(!this.state.isNewGame) {
+      const selected = this.state.letters;
+      const selectedPhrase = this.state.selectedPhrase;
+      const correct = this.checkScore(selectedPhrase);
     return (
       <div className="main-container">
         <div className="Phrase">
@@ -207,7 +209,24 @@ class Game extends React.Component {
         </div>
       </div>
     );
+  } else {
+    return (
+      <div className="main-container">
+        <h2 className="banner header">Phrase Hunter</h2>
+        <div className="section">
+        <button
+          className="button"
+          onClick={() =>
+          this.setState({
+            isNewGame: false,
+            selectedPhrase: this.selectPhrase(),
+          })}
+        >Start New Game</button>
+        </div>
+      </div>
+    );
   }
+} 
 }
 
 // ========================================
