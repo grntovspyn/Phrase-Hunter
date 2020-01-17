@@ -128,10 +128,8 @@ class Game extends React.Component {
     super(props);
     this.state = {
 
-
       letters: [],
       correctSelected: [],
-      wrongSelected: [],
       selectedPhrase: null,
       isNewGame: true,
     };
@@ -143,10 +141,7 @@ class Game extends React.Component {
       "Second Phrase",
       "Finally the third phrase"
     ];
-
-
     return phrases[Math.floor(Math.random() * phrases.length)]
-    //return "Test Phrase";
   }
 
   handleClick(i) {
@@ -167,7 +162,6 @@ class Game extends React.Component {
      * https://gist.github.com/telekosmos/3b62a31a5c43f40849bb 
      * from post by VonD made on Jul, 15, 2016
      */
-     
     const uniquePhrase = [ ...new Set(splitPhrase)];
 
     const correctSelected = [];
@@ -176,57 +170,56 @@ class Game extends React.Component {
         if(uniquePhrase.indexOf(letter) >= 0){
             correctSelected.push(letter);
         } 
-      }
+    }
     return correctSelected;
 
-    }
+  }
 
   render() {
     
-
     if(!this.state.isNewGame) {
       const selected = this.state.letters;
       const selectedPhrase = this.state.selectedPhrase;
       const correct = this.checkScore(selectedPhrase);
-    return (
-      <div className="main-container">
-        <div className="Phrase">
-          <Phrase 
-          phrase = {selectedPhrase}
-          correct = {correct}
-          />
+
+      return (
+        <div className="main-container">
+          <h2 className="banner header">Phrase Hunter</h2>
+          <div className="Phrase">
+            <Phrase 
+            phrase = {selectedPhrase}
+            correct = {correct}
+            />
+          </div>
+            <Board 
+            selected = {selected}
+            correct = {correct}
+            onClick={(i) => this.handleClick(i)}
+            />
+          <div className="game-info">
+            <div>{/* status */}</div>
+            <ol>{/* TODO */}</ol>
+          </div>
         </div>
-     
-          <Board 
-          selected = {selected}
-          correct = {correct}
-          onClick={(i) => this.handleClick(i)}
-          />
-  
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="main-container">
-        <h2 className="banner header">Phrase Hunter</h2>
-        <div className="section">
-        <button
-          className="button"
-          onClick={() =>
-          this.setState({
-            isNewGame: false,
-            selectedPhrase: this.selectPhrase(),
-          })}
-        >Start New Game</button>
-        </div>
-      </div>
-    );
-  }
-} 
+      );
+    } else {
+        return (
+          <div className="main-container">
+            <h2 className="banner header">Phrase Hunter</h2>
+            <div className="section">
+            <button
+              className="button"
+              onClick={() =>
+              this.setState({
+                isNewGame: false,
+                selectedPhrase: this.selectPhrase(),
+              })}
+            >Start New Game</button>
+            </div>
+          </div>
+        );
+      }
+  } 
 }
 
 // ========================================
