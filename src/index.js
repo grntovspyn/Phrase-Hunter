@@ -2,26 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// function IsSpace(props) {
+function IsSpace(props) {
 
+ 
 
-// }
-
-
-class PhraseLetters extends React.Component {
-render() {  
-
-  return (
-    <button 
-    
-      className="letter"
-    >
-      {this.props.value.toUpperCase()}
-  
-    </button>
-  );
 }
 
+
+function PhraseLetters(props) {
+ 
+  return (
+    <div
+      className="show"
+    >
+      {props.value.toUpperCase()}
+  
+    </div>
+  );
 }
 
 
@@ -35,6 +32,7 @@ function Letter(props) {
       </button>
     );
 }
+
 
 class Board extends React.Component {
    renderLetter(i) {
@@ -56,19 +54,16 @@ class Board extends React.Component {
 
        
     return (
-      
-      <div>
-          <div id="qwerty" className="section">
-              {keyboardKeys.map((rows) =>
-                  <div className="keyrow">
-                      {rows.map((keys) =>
-                          <div className="key">
-                              {this.renderLetter(keys)}
-                          </div>
-                      )}
-                  </div>
-              )}
-          </div>
+      <div id="qwerty" className="section">
+          {keyboardKeys.map((rows) =>
+              <div className="keyrow">
+                  {rows.map((keys) =>
+                      <div className="key">
+                          {this.renderLetter(keys)}
+                      </div>
+                  )}
+              </div>
+          )}
       </div>
     );
   }
@@ -79,10 +74,19 @@ class Phrase extends React.Component {
    
     return <PhraseLetters
     value={i}
+    
     />;
   }
 
+  checkSpace(i) {
 
+    if(i === " ") {
+      return "space";
+    } else {
+      return 'show letter';
+    }
+    
+  }
   
   render() {
 
@@ -90,14 +94,15 @@ class Phrase extends React.Component {
     const splitPhrase = phrase.split("");
 
     return (
-      <div className="section">
-      <div id="phrase" className="keyrow">
-        {splitPhrase.map((letters) =>
-          <div>
-          {this.renderPhrase(letters)}  
-          </div>
+  
+      <div id="phrase" className="section">
+        <ul>
+        {splitPhrase.map((letters) => 
+          <li className={this.checkSpace(letters)}>
+          {letters.toUpperCase()}  
+          </li>
         )}
-      </div>
+        </ul>
       </div>
 
     );
@@ -130,6 +135,8 @@ class Phrase extends React.Component {
   }
 }
 
+
+
 class Game extends React.Component {
   constructor(props){
     super(props);
@@ -139,7 +146,7 @@ class Game extends React.Component {
       letters: [],
       correctSelected: [],
       wrongSelected: [],
-
+      selectedPhrase: ""
     };
   }
 
@@ -152,6 +159,7 @@ class Game extends React.Component {
 
 
     return phrases[Math.floor(Math.random() * phrases.length)]
+    
 
   }
 
@@ -164,20 +172,23 @@ class Game extends React.Component {
   }
 
   render() {
+    const selectedPhrase = this.selectPhrase();
+
     return (
-      <div className="game">
+      <div className="main-container">
+       
+        <div className="Phrase">
         <Phrase 
-        phrase = {this.selectPhrase()}
+        phrase = {selectedPhrase}
         
         />
-        <div className="Phrase">
         </div>
-        <div className="game-board">
+     
           <Board 
           selected = {this.state.letters}
           onClick={(i) => this.handleClick(i)}
           />
-        </div>
+  
         <div className="game-info">
           <div>{/* status */}</div>
           <ol>{/* TODO */}</ol>

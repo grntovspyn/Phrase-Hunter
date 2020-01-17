@@ -84,10 +84,13 @@ input[type=submit].correct {
 .section {
   width: 100%;
   padding: 10px;
+  
 }
 
 #phrase ul li{
   margin-top: 15px;
+  display: inline-block;
+  text-align: center;
 }
 
 /* Title */
@@ -116,11 +119,12 @@ input[type=submit].correct {
 
 .hide {
   color: transparent;
-  visibility: hidden !important;
 }
 
 .show {
   color: #fff;
+  display: flex;
+  justify-content: center;
   background-color: #4ac0d5;
   font-size: 20px;
   height: 65px;
