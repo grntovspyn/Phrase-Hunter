@@ -154,44 +154,6 @@ class Phrase extends React.Component {
   }
 }
 
-// class Lives extends React.Component {
-
-//   renderHearts(lives) {
-//     return (
-//       <Hearts
-//         lives={lives}
-
-//       />
-//     )
-
-//   }
-
-  
-
-//   render() {
-//     const livesLeft = 5 - this.props.lives;
-    
-    
-//     const lives = Array(5).fill(null);
-//     const moves = lives.map((step) => {
-//       return (
-//         <ul>
-//           <li className="section">
-//             {this.renderHearts(this.props.lives)}
-//           </li>
-//         </ul>
-//       );
-//     });
-    
-//     return (
-//       <div className="game-info">
-//       <div>{moves}</div>
-//       </div>
-//     );
-
-//   }
-// }
-
 
 class Game extends React.Component {
   constructor(props){
@@ -208,7 +170,6 @@ class Game extends React.Component {
     this.initialState = this.state;
   }
 
-
   selectPhrase() {
     const phrases = [
       "This is phrase one",
@@ -220,7 +181,6 @@ class Game extends React.Component {
 
   handleClick(i) {
     const letters = this.state.letters;
-    
     this.setState({
       letters: letters + i,
     });
