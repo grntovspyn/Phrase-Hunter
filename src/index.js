@@ -183,15 +183,15 @@ class Game extends React.Component {
     this.state = {
 
       letters: [],
-      correctSelected: [],
       selectedPhrase: null,
       isNewGame: true,
       winOrLose: null,
-      lives: 5,
+      lives: 0,
     };
 
     this.initialState = this.state;
   }
+
 
   selectPhrase() {
     const phrases = [
@@ -203,14 +203,11 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
-    const letters = this.state.letters.slice();
-    this.checkForWin();
+    const letters = this.state.letters;
+    
     this.setState({
       letters: letters + i,
     });
-
-    
-    return;
   }
 
   makePhraseUnique(selectedPhrase) {
@@ -245,76 +242,88 @@ class Game extends React.Component {
     const correct = this.checkIfCorrect(currentPhrase);
     const uniquePhrase = this.makePhraseUnique(currentPhrase);
 
-    const livesLost = 5 - (selected.length - correct.length);
+    const lives = selected.length - correct.length;
 
-    this.setState({
-      lives: livesLost,
-    })
+ 
 
-    if(uniquePhrase.length === correct.length && this.state.lives > 0) {
-      this.setState({
-        winOrLose: true,
-      });
+    if(uniquePhrase.length === correct.length && lives < 5) {
+      return true;
      
 
-    } else if(this.state.lives === 0) {
-      this.setState({
-        winOrLose: false,
-      });
+    } else if(lives === 5) {
+      return false;
      
     }
- 
+    return null;
   }
 
-  gameOver(){
-    
-      if(this.state.winOrLose === true) {
-        return (
-          <div id ="overlay" className="overlayheader">
-            <h2>You Win</h2>
-            <div className="section">
-           <button
-           className="button"
-           onClick={() =>
-            {this.setState(this.initialState)}}
-
-         >Reset Game</button>
-         </div>
-         </div>
-        );
-
-      } else if (this.state.winOrLose === false) {
-        return (
-          <div id ="overlay" className="overlayheader">
-            <h2>You Lose</h2>
-            <div className="section">
-            <button
-           className="button"
-           onClick={() =>
-            {this.setState(this.initialState)}}
-
-          >Reset Game</button>
-         </div>
-          </div>
-        );
-      }
-      return;
-  }
 
   render() {
     
-    if(!this.state.isNewGame) {
-      const selected = this.state.letters;
-      const currentPhrase = this.state.selectedPhrase;
-      const correct = this.checkIfCorrect(currentPhrase);
-      
-      const gameOver = this.gameOver();
-    
+     if(this.state.isNewGame) {
       return (
         <div className="main-container">
           <h2 className="banner header">Phrase Hunter</h2>
-          {this.state.lives}
-          {selected}
+          <div className="section">
+          <button
+            className="button"
+            onClick={() =>
+            this.setState({
+              isNewGame: false,
+              selectedPhrase: this.selectPhrase(),
+            })}
+          >Start New Game</button>
+          </div>
+        </div>
+      );
+     } else if(this.checkForWin() === true) {
+      return (
+        <div className="main-container">
+        <div className="section">
+        <div id ="overlay" className="overlayheader">
+        <h2 className="banner header">Phrase Hunter</h2>
+          <h1>Congratulations on guessing "{this.state.selectedPhrase}". You win!</h1>
+          <div className="section">
+         <button
+         className="button"
+         onClick={() =>
+          {this.setState(this.initialState)}}
+
+       >Reset Game</button>
+       </div>
+       </div>
+       </div>
+       </div>
+      );
+
+    } else if (this.checkForWin() === false) {
+      return (
+        <div className="main-container">
+        <div className="section">
+        <div id ="overlay" className="overlayheader">
+        <h2 className="banner header">Phrase Hunter</h2>
+          <h1>I'm sorry but the phrase was "{this.state.selectedPhrase}". Please try again!</h1>
+          <div className="section">
+          <button
+         className="button"
+         onClick={() =>
+          {this.setState(this.initialState)}}
+
+        >Reset Game</button>
+       </div>
+        </div>
+        </div>
+        </div>
+      );
+    } else if(!this.state.isNewGame) {
+      const selected = this.state.letters;
+      const currentPhrase = this.state.selectedPhrase;
+      const correct = this.checkIfCorrect(currentPhrase);
+ 
+      return (
+        <div className="main-container">
+          {this.checkForWin()}
+          <h2 className="banner header">Phrase Hunter</h2>
           <div className="Phrase">
             <Phrase 
               phrase = {currentPhrase}
@@ -331,26 +340,11 @@ class Game extends React.Component {
               correct = {correct}
 
             />
-          {gameOver}
+            
         </div>
       );
-    } else {
-        return (
-          <div className="main-container">
-            <h2 className="banner header">Phrase Hunter</h2>
-            <div className="section">
-            <button
-              className="button"
-              onClick={() =>
-              this.setState({
-                isNewGame: false,
-                selectedPhrase: this.selectPhrase(),
-              })}
-            >Start New Game</button>
-            </div>
-          </div>
-        );
-      }
+    } 
+    
   } 
 }
 
