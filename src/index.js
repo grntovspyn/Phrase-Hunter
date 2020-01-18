@@ -8,7 +8,6 @@ function PhraseLetters(props) {
       className={props.class}
     >
       {props.value.toUpperCase()}
-
     </div>
   );
 }
@@ -19,7 +18,6 @@ function liveHeart(props) {
       className="Hearts"
     >
      <img src="liveHeart.png" alt="full heart"></img>
-
     </div>
   );
 }
@@ -30,12 +28,11 @@ function lostHeart(props) {
       className="Hearts"
     >
      <img src="lostHeart.png" alt="full heart"></img>
-
     </div>
   );
 }
 
-
+//Checks if the letter has been selected and disables it to prevent duplicate entries
 function Letter(props) {
   if(props.class !== "key") {
     return (
@@ -59,19 +56,16 @@ function Letter(props) {
   }
 }
 
-
+//Class for displaying keyboard
 class Board extends React.Component {
    renderLetter(i) {
-   
     return <Letter 
     value={i}
     class={this.checkSelected(i)}
     onClick={() => this.props.onClick(i)}
-    
     />;
   }
   
-
   //Selects class name to style keyboard keys correctly
   checkSelected(keys){
     const selected = this.props.selected;
@@ -109,7 +103,7 @@ class Board extends React.Component {
   }
 }
 
-
+//Class for displaying phrase to guess
 class Phrase extends React.Component {
   renderPhrase(i) {
    
@@ -151,22 +145,20 @@ class Phrase extends React.Component {
       </div>
 
     );
-  
-
   }
 }
 
-
+//Top level class that controls the game
 class Game extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-
       letters: [],
       selectedPhrase: null,
       isNewGame: true,
     };
 
+    //Use this to reset the game once complete
     this.initialState = this.state;
   }
 
@@ -232,7 +224,6 @@ class Game extends React.Component {
 
 
   render() {
-    
      if(this.state.isNewGame) {
       return (
         <div className="main-container">
