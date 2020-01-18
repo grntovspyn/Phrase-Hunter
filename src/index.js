@@ -52,7 +52,6 @@ function Letter(props) {
       <button 
         className={props.class}
         onClick={() => props.onClick()}
-
       >
         {props.value.toUpperCase()}
       </button>
@@ -72,19 +71,21 @@ class Board extends React.Component {
     />;
   }
   
+
+  //Selects class name to style keyboard keys correctly
   checkSelected(keys){
     const selected = this.props.selected;
     const correct = this.props.correct;
     if(selected != null) {
-      
-    if(selected.indexOf(keys) >= 0 && correct.indexOf(keys) >= 0) {
-      return "key chosen";
-    } else if (selected.indexOf(keys) >= 0 && correct.indexOf(keys) <= 0) {
-      return "key wrong";
-    } else {
-      return "key";
+        
+      if(selected.indexOf(keys) >= 0 && correct.indexOf(keys) >= 0) {
+        return "key chosen";
+      } else if (selected.indexOf(keys) >= 0 && correct.indexOf(keys) <= 0) {
+        return "key wrong";
+      } else {
+        return "key";
+      }
     }
-  }
   }
 
   render() {
@@ -119,6 +120,7 @@ class Phrase extends React.Component {
     />;
   }
 
+  //Selects correct class name to style phrase display correctly
   checkSpace(letters, correctLetters) {
     
     if(correctLetters.indexOf(letters) >= 0) {
