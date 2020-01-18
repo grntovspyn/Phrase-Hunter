@@ -13,12 +13,23 @@ function PhraseLetters(props) {
   );
 }
 
-function Hearts(props) {
+function liveHeart(props) {
   return (
     <div
       className="Hearts"
     >
      <img src="liveHeart.png" alt="full heart"></img>
+
+    </div>
+  );
+}
+
+function lostHeart(props) {
+  return (
+    <div
+      className="Hearts"
+    >
+     <img src="lostHeart.png" alt="full heart"></img>
 
     </div>
   );
@@ -143,38 +154,43 @@ class Phrase extends React.Component {
   }
 }
 
-class Lives extends React.Component {
+// class Lives extends React.Component {
 
-  renderHearts(lives) {
-    return (
-      <Hearts
-        lives={lives}
+//   renderHearts(lives) {
+//     return (
+//       <Hearts
+//         lives={lives}
 
-      />
-    )
+//       />
+//     )
 
-  }
+//   }
 
-  render() {
-    const lives = Array(5).fill(null);
-    const moves = lives.map((step) => {
-      return (
-        <ul>
-          <li className="section">
-            {this.renderHearts(this.props.lives)}
-          </li>
-        </ul>
-      );
-    });
+  
+
+//   render() {
+//     const livesLeft = 5 - this.props.lives;
     
-    return (
-      <div className="game-info">
-      <div>{moves}</div>
-      </div>
-    );
+    
+//     const lives = Array(5).fill(null);
+//     const moves = lives.map((step) => {
+//       return (
+//         <ul>
+//           <li className="section">
+//             {this.renderHearts(this.props.lives)}
+//           </li>
+//         </ul>
+//       );
+//     });
+    
+//     return (
+//       <div className="game-info">
+//       <div>{moves}</div>
+//       </div>
+//     );
 
-  }
-}
+//   }
+// }
 
 
 class Game extends React.Component {
@@ -244,15 +260,10 @@ class Game extends React.Component {
 
     const lives = selected.length - correct.length;
 
- 
-
     if(uniquePhrase.length === correct.length && lives < 5) {
       return true;
-     
-
     } else if(lives === 5) {
       return false;
-     
     }
     return null;
   }
@@ -279,50 +290,57 @@ class Game extends React.Component {
      } else if(this.checkForWin() === true) {
       return (
         <div className="main-container">
-        <div className="section">
-        <div id ="overlay" className="overlayheader">
-        <h2 className="banner header">Phrase Hunter</h2>
-          <h1>Congratulations on guessing "{this.state.selectedPhrase}". You win!</h1>
           <div className="section">
-         <button
-         className="button"
-         onClick={() =>
-          {this.setState(this.initialState)}}
-
-       >Reset Game</button>
-       </div>
-       </div>
-       </div>
+            <div id ="overlay" className="overlayheader">
+            <h2 className="banner header">Phrase Hunter</h2>
+              <h1>Congratulations on guessing "{this.state.selectedPhrase}". You win!</h1>
+                <div className="section">
+                  <button
+                    className="button"
+                    onClick={() => this.setState(this.initialState)}
+                  >Reset Game</button>
+              </div>
+          </div>
+        </div>
        </div>
       );
 
     } else if (this.checkForWin() === false) {
       return (
         <div className="main-container">
-        <div className="section">
-        <div id ="overlay" className="overlayheader">
-        <h2 className="banner header">Phrase Hunter</h2>
-          <h1>I'm sorry but the phrase was "{this.state.selectedPhrase}". Please try again!</h1>
           <div className="section">
-          <button
-         className="button"
-         onClick={() =>
-          {this.setState(this.initialState)}}
-
-        >Reset Game</button>
-       </div>
-        </div>
-        </div>
+            <div id ="overlay" className="overlayheader">
+            <h2 className="banner header">Phrase Hunter</h2>
+              <h1>I'm sorry but the phrase was "{this.state.selectedPhrase}". Please try again!</h1>
+                <div className="section">
+                  <button
+                    className="button"
+                    onClick={() => this.setState(this.initialState)}
+                  >Reset Game</button>
+                </div>
+            </div>
+          </div>
         </div>
       );
     } else if(!this.state.isNewGame) {
       const selected = this.state.letters;
       const currentPhrase = this.state.selectedPhrase;
       const correct = this.checkIfCorrect(currentPhrase);
- 
+      const livesLost = selected.length - correct.length;
+
+      let heartsToReturn = [];
+      const displayHeart = () => {
+         for(var i = 5; i > livesLost; i--){
+          heartsToReturn.push(<li> {liveHeart()}</li>);
+         }
+         for(var j = 0; j < livesLost; j++){
+          heartsToReturn.push(<li> {lostHeart()}</li>);
+         }
+         return heartsToReturn;
+        };
+   
       return (
         <div className="main-container">
-          {this.checkForWin()}
           <h2 className="banner header">Phrase Hunter</h2>
           <div className="Phrase">
             <Phrase 
@@ -335,12 +353,13 @@ class Game extends React.Component {
               correct = {correct}
               onClick={(i) => this.handleClick(i)}
             />
-            <Lives
-              lives = {this.state.lives}
-              correct = {correct}
-
-            />
-            
+          <div className="game-info">
+            <div className="section">
+              <ul>
+                  {displayHeart()}
+              </ul>
+            </div>
+          </div>  
         </div>
       );
     } 
@@ -354,6 +373,3 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
-
-
-
