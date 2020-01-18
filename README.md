@@ -1,5 +1,15 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+# Phrase Hunter
+
+This is a replication of Project 4 from my TreeHouse Php program done with ReactJS
+
+## Features
+
+Click and select the letters to try to guess the randomly selected phrase.  You have 5 tries to get it right. 
+After guessing it correctly or failing you'll have the option to start over to try another phrase again.
+
 ## Available Scripts
 
 In the project directory, you can run:
