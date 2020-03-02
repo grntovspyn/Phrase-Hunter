@@ -1,37 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import PhraseLetters from './components/PhraseLetters.js';
+import LiveHeart from './components/LiveHeart.js';
+import LostHeart from './components/LostHeart.js';
 
 
-function PhraseLetters(props) {
-  return (
-    <div
-      className={props.class}
-    >
-      {props.value.toUpperCase()}
-    </div>
-  );
-}
-
-function liveHeart(props) {
-  return (
-    <div
-      className="Hearts"
-    >
-     <img src="liveHeart.png" alt="full heart"></img>
-    </div>
-  );
-}
-
-function lostHeart(props) {
-  return (
-    <div
-      className="Hearts"
-    >
-     <img src="lostHeart.png" alt="full heart"></img>
-    </div>
-  );
-}
 
 //Checks if the letter has been selected and disables it to prevent duplicate entries
 function Letter(props) {
@@ -284,10 +258,10 @@ class Game extends React.Component {
       let heartsToReturn = [];
       const displayHeart = () => {
          for(var i = 5; i > livesLost; i--){
-          heartsToReturn.push(<li> {liveHeart()}</li>);
+          heartsToReturn.push(<li> {LiveHeart()}</li>);
          }
          for(var j = 0; j < livesLost; j++){
-          heartsToReturn.push(<li> {lostHeart()}</li>);
+          heartsToReturn.push(<li> {LostHeart()}</li>);
          }
          return heartsToReturn;
         };
